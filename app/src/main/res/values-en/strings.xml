@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Filmoteca</string>
+    <string name="autor_texto">Created by Carlos Alfredo Callagua Llaque</string>
+    <string name="btn_web">Go to website</string>
+    <string name="btn_soporte">Get support</string>
+    <string name="btn_volver">Back</string>
+    <string name="toast_pendiente">Feature not implemented</string>
+</resources>
