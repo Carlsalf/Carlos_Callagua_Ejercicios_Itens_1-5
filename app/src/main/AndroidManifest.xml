@@ -9,9 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Filmoteca">
 
-        <!-- LAUNCHER: AboutActivity -->
+        <!-- Lanzador principal -->
         <activity
-            android:name=".AboutActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,10 +19,26 @@
             </intent-filter>
         </activity>
 
-        <!-- MainActivity.kt -->
+        <!-- Ej.2: About (intents implícitos dentro de la activity) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".AboutActivity"
             android:exported="false" />
-    </application>
 
+        <!-- Ej.3: Lista XML/Recycler + detalle XML -->
+        <activity
+            android:name=".FilmListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FilmDetailActivity"
+            android:exported="false" />
+
+        <!-- Ej.5: Lista Compose + detalle Compose -->
+        <activity
+            android:name=".FilmListComposeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FilmDetailComposeActivity"
+            android:exported="false" />
+
+    </application>
 </manifest>

@@ -1,8 +1,10 @@
 package es.ua.eps.filmoteca
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -24,8 +26,12 @@ enum class Mode { Layouts, Compose }
 
 class AboutActivity : AppCompatActivity() {
 
-    // Cambia aquí para tus capturas
-    private val mode = Mode.Compose   // o Mode.Layouts
+    // Cambiar para capturas: Mode.Layouts o Mode.Compose
+    private val mode = Mode.Compose
+
+    //  web y tu email
+    private val personalUrl = "https://github.com/Carlsalf"
+    private val soporteEmail = "mailto:carls.alfred9@gmail.com"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,16 +49,22 @@ class AboutActivity : AppCompatActivity() {
     private fun initLayouts() {
         setContentView(R.layout.activity_about)
 
-        val msg = getString(R.string.toast_pendiente)
-
         findViewById<Button>(R.id.btnWeb).setOnClickListener {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            val uri = Uri.parse(personalUrl)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
         }
+
         findViewById<Button>(R.id.btnSoporte).setOnClickListener {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            val mail = Uri.parse(soporteEmail)
+            val intent = Intent(Intent.ACTION_SENDTO, mail)
+            // Si quieres añadir asunto:
+            // intent.putExtra(Intent.EXTRA_SUBJECT, "Soporte Filmoteca")
+            startActivity(intent)
         }
+
         findViewById<Button>(R.id.btnVolver).setOnClickListener {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 
@@ -61,7 +73,19 @@ class AboutActivity : AppCompatActivity() {
         setContent {
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    AboutScreenCompose()
+                    AboutScreenCompose(
+                        onOpenWeb = {
+                            val uri = Uri.parse(personalUrl)
+                            val intent = Intent(Intent.ACTION_VIEW, uri)
+                            startActivity(intent)
+                        },
+                        onSoporte = {
+                            val mail = Uri.parse(soporteEmail)
+                            val intent = Intent(Intent.ACTION_SENDTO, mail)
+                            startActivity(intent)
+                        },
+                        onVolver = { finish() }
+                    )
                 }
             }
         }
@@ -70,9 +94,12 @@ class AboutActivity : AppCompatActivity() {
 
 // UI Compose equivalente
 @Composable
-fun AboutScreenCompose() {
+fun AboutScreenCompose(
+    onOpenWeb: () -> Unit,
+    onSoporte: () -> Unit,
+    onVolver: () -> Unit
+) {
     val ctx = LocalContext.current
-    val msg = stringResource(id = R.string.toast_pendiente)
 
     Column(
         modifier = Modifier
@@ -87,7 +114,7 @@ fun AboutScreenCompose() {
 
         Spacer(Modifier.height(12.dp))
 
-        // Cambia el nombre si tu drawable no es 'carlosalfredo'
+        //  drawable:'carlosalfredo'
         Image(
             painter = painterResource(id = R.drawable.carlosalfredo),
             contentDescription = stringResource(id = R.string.autor_texto),
@@ -99,21 +126,24 @@ fun AboutScreenCompose() {
         Spacer(Modifier.height(24.dp))
 
         M3Button(
-            onClick = { Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show() },
+            onClick = onOpenWeb,
             modifier = Modifier.fillMaxWidth()
         ) { Text(text = stringResource(id = R.string.btn_web)) }
 
         Spacer(Modifier.height(12.dp))
 
         M3Button(
-            onClick = { Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show() },
+            onClick = onSoporte,
             modifier = Modifier.fillMaxWidth()
         ) { Text(text = stringResource(id = R.string.btn_soporte)) }
 
         Spacer(Modifier.height(12.dp))
 
         M3Button(
-            onClick = { Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show() },
+            onClick = {
+
+                onVolver()
+            },
             modifier = Modifier.fillMaxWidth()
         ) { Text(text = stringResource(id = R.string.btn_volver)) }
     }
